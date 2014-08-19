@@ -12,6 +12,7 @@ namespace Zanui\FixturesBundle\DataFixtures;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Finder\SplFileInfo;
+use Zanui\FixturesBundle\Exception\LoadInfoException;
 
 /**
  * Zanui ORM fixture
@@ -62,6 +63,12 @@ abstract class ZanuiOrmFixture extends ZanuiFixture
         $filename = $dir . DIRECTORY_SEPARATOR . 'Data' . DIRECTORY_SEPARATOR . $name . '.yml';
         $file = new SplFileInfo($filename, '', '');
 
-        return Yaml::parse($file->getContents());
+        $fileContents = Yaml::parse($file->getContents());
+
+        if (!is_array($fileContents)) {
+            throw new LoadInfoException('File ' . $filename . ' could not be parsed into an array.');
+        }
+
+        return $fileContents;
     }
 }
