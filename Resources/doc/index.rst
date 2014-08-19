@@ -1,5 +1,8 @@
-ZanuiFixturesBundle
-===================
+Welcome to ZanuiFixturesBundle's documentation!
+===============================================
+
+.. toctree::
+   :maxdepth: 2
 
 This bundle defines abstract fixture classes to load test data into a database. It complements the
 `DoctrineFixturesBundle <https://github.com/doctrine/DoctrineFixturesBundle>`_ by extending and implementing
