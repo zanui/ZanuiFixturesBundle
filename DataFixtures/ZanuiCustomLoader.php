@@ -11,7 +11,7 @@ namespace Zanui\FixturesBundle\DataFixtures;
 
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -52,7 +52,7 @@ abstract class ZanuiCustomLoader extends ZanuiFixture
         $customInfo = array();
 
         foreach ($finder as $file) {
-            /** @var SplFileInfo $file */
+            /** @var FinderSplFileInfo $file */
 
             $customInfo[$file->getFilename()] = Yaml::parse($file->getContents());
         }
