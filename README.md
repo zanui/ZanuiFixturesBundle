@@ -16,4 +16,4 @@ that bundle first to get familiar with the basic concepts that we will build upo
 
 ## Documentation
 
-See [Resources/doc/index.rst](Resources/doc/index.rst)
+See http://zanuifixturesbundle.readthedocs.org/
