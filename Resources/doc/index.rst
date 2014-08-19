@@ -1,5 +1,5 @@
-Welcome to ZanuiFixturesBundle's documentation!
-===============================================
+Welcome to the ZanuiFixturesBundle!
+===================================
 
 This bundle defines abstract fixture classes to load test data into a database.
 It complements the DoctrineFixturesBundle_ by extending and implementing
