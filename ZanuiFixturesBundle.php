@@ -4,7 +4,7 @@
  *
  * @link      http://github.com/zanui/shop for the canonical source repository
  * @copyright Copyright (c) 2011-2014 Internet Services Australia 3 Pty Limited (http://www.zanui.com.au)
- * @license   All rights reserved - Do Not Redistribute
+ * @license   The MIT License (MIT)
  */
 
 namespace Zanui\FixturesBundle;
