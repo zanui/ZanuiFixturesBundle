@@ -1,8 +1,8 @@
-# ZanuiFixturesBundle
+# ZanuiFixturesBundle [![Build Status](https://scrutinizer-ci.com/g/zanui/ZanuiFixturesBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/zanui/ZanuiFixturesBundle/build-status/master)
 
-[![Build Status](https://scrutinizer-ci.com/g/zanui/ZanuiFixturesBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/zanui/ZanuiFixturesBundle/build-status/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/zanui/ZanuiFixturesBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zanui/ZanuiFixturesBundle/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/zanui/zanui-fixtures-bundle/v/stable.svg)](https://packagist.org/packages/zanui/zanui-fixtures-bundle)
+[![Dependency Status](https://gemnasium.com/zanui/ZanuiFixturesBundle.svg)](https://gemnasium.com/zanui/ZanuiFixturesBundle)
 [![Total Downloads](https://poser.pugx.org/zanui/zanui-fixtures-bundle/downloads.svg)](https://packagist.org/packages/zanui/zanui-fixtures-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/zanui/zanui-fixtures-bundle/v/unstable.svg)](https://packagist.org/packages/zanui/zanui-fixtures-bundle)
 [![License](https://poser.pugx.org/zanui/zanui-fixtures-bundle/license.svg)](https://packagist.org/packages/zanui/zanui-fixtures-bundle)
