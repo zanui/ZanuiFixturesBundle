@@ -1,0 +1,27 @@
+{
+    "name": "zanui/zanui-fixtures-bundle",
+    "type": "symfony-bundle",
+    "description": "Provides classes to easily load fixtures",
+    "keywords": ["Persistence", "Fixture"],
+    "homepage": "https://github.com/zanui/ZanuiFixturesBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zanui Engineering Team",
+            "email": "wizards@zanui.com.au"
+        },
+        {
+            "name": "Javier Cejudo",
+            "email": "javier.cejudo@zanui.com.au"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "doctrine/doctrine-fixtures-bundle": "2.2.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zanui\\FixturesBundle\\": ""
+        }
+    }
+}
