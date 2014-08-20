@@ -15,9 +15,10 @@ we will build upon.
 .. toctree::
    :maxdepth: 2
 
-   configuration
-   creating_fixtures
-   conventions
-   controlling_order
-   options_and_properties
-   advanced_usage
+   guides/installation
+   guides/configuration
+   guides/creating_fixtures
+   guides/conventions
+   guides/controlling_order
+   guides/options_and_properties
+   guides/advanced_usage
