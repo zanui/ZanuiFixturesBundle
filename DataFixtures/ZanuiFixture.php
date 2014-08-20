@@ -59,7 +59,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     /**
      * Defines the separator to use for the local reference suffix
      */
-    const LOCAL_REFERENCE_SEPARATOR = '-';
+    const REFERENCE_SEPARATOR = '-';
 
     /**
      * @var string The namespace to use when creating entities
@@ -321,12 +321,12 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
         if ($this->isOptionEnabled(static::DATA_OPTION_ADD_REFERENCE, $options)) {
             $referenceKey =
                 implode(
-                    static::LOCAL_REFERENCE_SEPARATOR,
+                    static::REFERENCE_SEPARATOR,
                     array_filter(array($key, $itemIndex), 'static::referenceFilter')
                 ) .
                 $referenceUniqueSuffix;
 
-            $this->addReference($referenceKey, $entity);
+            $this->addReference($this->name . static::REFERENCE_SEPARATOR . $referenceKey, $entity);
         }
     }
 
@@ -384,6 +384,6 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      */
     protected function getUniqueSuffix()
     {
-        return static::LOCAL_REFERENCE_SEPARATOR . uniqid();
+        return static::REFERENCE_SEPARATOR . uniqid();
     }
 }
