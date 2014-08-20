@@ -283,7 +283,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     /**
      * Loads a single row for a specific entity
      *
-     * @param string         $entityClass
+     * @param string        $entityClass
      * @param string        $key
      * @param ObjectManager $manager
      * @param int           $itemIndex
