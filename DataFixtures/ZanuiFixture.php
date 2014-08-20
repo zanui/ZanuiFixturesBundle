@@ -198,9 +198,9 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      * Converts a field name to a setter method name
      * (eg. name -> setName, name_en -> setNameEn)
      *
-     * @param string $fieldName
+     * @param $fieldName
      *
-     * @return string
+     * @return mixed
      */
     protected function fieldToSetterMethod($fieldName)
     {
@@ -283,7 +283,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     /**
      * Loads a single row for a specific entity
      *
-     * @param string        $entityClass
+     * @param mixed         $entityClass
      * @param string        $key
      * @param ObjectManager $manager
      * @param int           $itemIndex
