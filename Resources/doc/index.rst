@@ -12,6 +12,9 @@ we will build upon.
 .. _Doctrine2 Data Fixtures library: https://github.com/doctrine/data-fixtures>
 .. _documentation: http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
 
+Guide
+-----
+
 .. toctree::
    :maxdepth: 2
 
