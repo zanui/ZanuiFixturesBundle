@@ -22,9 +22,20 @@
         "symfony/finder": "~2.2",
         "symfony/yaml": "~2.2"
     },
+    "require-dev": {
+      "phpspec/phpspec": "~2.0",
+      "henrikbjorn/phpspec-code-coverage": "~0.2",
+      "satooshi/php-coveralls": "dev-master"
+    },
     "autoload": {
+        "psr-0": {
+          "": "src/"
+        },
         "psr-4": {
-            "Zanui\\FixturesBundle\\": ""
+          "Zanui\\FixturesBundle\\": "src/"
         }
+    },
+    "config": {
+      "bin-dir": "bin/"
     }
 }

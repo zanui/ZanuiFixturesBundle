@@ -10,8 +10,8 @@
 namespace Zanui\FixturesBundle\DataFixtures;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Yaml\Yaml;
 use Zanui\FixturesBundle\Exception\LoadInfoException;
 
 /**
@@ -22,16 +22,37 @@ use Zanui\FixturesBundle\Exception\LoadInfoException;
  */
 abstract class ZanuiOrmFixture extends ZanuiFixture
 {
+    /** @var string */
+    protected $dataFilename;
+
+    /**
+     * @return array
+     */
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataFilename()
+    {
+        return $this->dataFilename;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
-        $info = $this->loadInfo();
-        $options = $this->getOptions($info);
+        $this->loadDataFilename();
+        $this->loadInfo();
+        $options = $this->getOptions($this->info);
+
         $entityClass = $this->namespace . '\\' . $this->name;
 
-        foreach ($info['data'] as $key => $itemData) {
+        foreach ($this->info['data'] as $key => $itemData) {
             $this->loadSingleEntity(
                 $entityClass,
                 $key,
@@ -48,27 +69,45 @@ abstract class ZanuiOrmFixture extends ZanuiFixture
     }
 
     /**
-     * {@inheritdoc}
+     * @return ZanuiOrmFixture
      */
-    protected function loadInfo($dir = null, $name = null)
+    public function loadDataFilename()
     {
-        if ($dir === null) {
-            $dir = $this->baseDir;
-        }
+        $this->dataFilename =
+            $this->baseDir . DIRECTORY_SEPARATOR .
+            'Data' . DIRECTORY_SEPARATOR .
+            $this->name . '.yml';
 
-        if ($name === null) {
-            $name = $this->name;
-        }
+        return $this;
+    }
 
-        $filename = $dir . DIRECTORY_SEPARATOR . 'Data' . DIRECTORY_SEPARATOR . $name . '.yml';
+    /**
+     * @param string $filename
+     * @return string
+     */
+    public function getDataFileContent($filename)
+    {
         $file = new SplFileInfo($filename, '', '');
 
-        $fileContents = Yaml::parse($file->getContents());
+        return $file->getContents($filename);
+    }
+
+    /**
+     * @throws LoadInfoException
+     */
+    protected function loadInfo()
+    {
+        $filename = $this->getDataFilename();
+        $fileContents = Yaml::parse($this->getDataFileContent($filename));
 
         if (!is_array($fileContents)) {
             throw new LoadInfoException('File ' . $filename . ' could not be parsed into an array.');
         }
 
-        return $fileContents;
+        if (!isset($fileContents['data'])) {
+            throw new LoadInfoException('File ' . $filename . ' does not have a data key.');
+        }
+
+        $this->info = $fileContents;
     }
 }

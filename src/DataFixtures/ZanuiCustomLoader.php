@@ -36,18 +36,10 @@ abstract class ZanuiCustomLoader extends ZanuiFixture
     /**
      * {@inheritdoc}
      */
-    protected function loadInfo($dir = null, $name = null)
+    protected function loadInfo()
     {
-        if ($dir === null) {
-            $dir = $this->baseDir;
-        }
-
-        if ($name === null) {
-            $name = $this->name;
-        }
-
         $finder = new Finder();
-        $finder->files()->in($dir . '/' . $name)->name('*.yml');
+        $finder->files()->in($this->baseDir . '/' . $this->name)->name('*.yml');
 
         $customInfo = array();
 

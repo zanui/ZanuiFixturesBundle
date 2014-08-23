@@ -1,0 +1,13 @@
+formatter.name: pretty
+extensions:
+    - PhpSpec\Extension\CodeCoverageExtension
+code_coverage:
+  whitelist:
+    - src/DataFixtures
+#    - src/DependencyInjection
+  format:
+    - html
+    - clover
+  output:
+    html: coverage
+    clover: build/logs/clover.xml
