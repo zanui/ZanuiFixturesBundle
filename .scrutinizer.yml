@@ -1,0 +1,18 @@
+imports:
+    - php
+
+filter:
+    excluded_paths: &excluded_paths
+      - spec
+
+build:
+    tests:
+        before:
+            - 'bin/phpspec run'
+
+tools:
+    php_sim: true
+    php_pdepend: true
+    php_analyzer: true
+    php_code_sniffer: true
+    php_mess_detector: true
