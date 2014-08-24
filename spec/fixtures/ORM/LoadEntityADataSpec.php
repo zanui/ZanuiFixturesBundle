@@ -82,30 +82,28 @@ class LoadEntityADataSpec extends ObjectBehavior
             ->during('isOptionEnabled', array('option_a', array()));
     }
 
-    function it_can_tell_that_if_valid_options_is_enabled()
+    function it_can_tell_if_valid_options_are_enabled()
     {
-        $this->isOptionEnabled(
-            'add_reference',
-            array('add_reference' => true)
-        )->shouldBe(true);
+        $optionEnabled = array('add_reference' => true);
+        $optionDisabled = array('add_reference' => false);
 
-        $this->isOptionDisabled(
-            'add_reference',
-            array('add_reference' => true)
-        )->shouldBe(false);
+        $this->isOptionEnabled('add_reference', $optionEnabled)
+            ->shouldBe(true);
 
-        $this->isOptionEnabled('add_reference', array())->shouldBe(false);
-        $this->isOptionDisabled('add_reference', array())->shouldBe(true);
+        $this->isOptionEnabled('add_reference', array())
+            ->shouldBe(false);
 
-        $this->isOptionEnabled(
-            'add_reference',
-            array('add_reference' => false)
-        )->shouldBe(false);
+        $this->isOptionEnabled('add_reference', $optionDisabled)
+            ->shouldBe(false);
 
-        $this->isOptionDisabled(
-            'add_reference',
-            array('add_reference' => false)
-        )->shouldBe(true);
+        $this->isOptionDisabled('add_reference', $optionEnabled)
+            ->shouldBe(false);
+
+        $this->isOptionDisabled('add_reference', array())
+            ->shouldBe(true);
+
+        $this->isOptionDisabled('add_reference', $optionDisabled)
+            ->shouldBe(true);
     }
 
     function it_recognises_foreign_keys()
