@@ -16,9 +16,9 @@ project = u'ZanuiFixturesBundle'
 copyright = u'2014, Internet Services Australia 3 Pty Limited (http://www.zanui.com.au)'
 
 # The short X.Y version.
-version = '1.0'
+version = '2.0'
 # The full version, including alpha/beta/rc tags.
-release = '1.0.2'
+release = '2.0.0'
 
 html_theme = 'default'
 htmlhelp_basename = 'zanui-fixtures-bundle'
