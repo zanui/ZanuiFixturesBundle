@@ -3,11 +3,11 @@ imports:
 
 filter:
     excluded_paths: &excluded_paths
-      - spec
+      - spec/*
 
 build:
     tests:
-        before:
+        override:
             - 'bin/phpspec run'
 
 tools:
