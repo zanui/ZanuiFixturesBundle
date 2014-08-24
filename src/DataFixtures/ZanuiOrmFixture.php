@@ -25,12 +25,39 @@ abstract class ZanuiOrmFixture extends ZanuiFixture
     /** @var string */
     protected $dataFilename;
 
+    /** @var string */
+    protected $dataFileContent;
+
     /**
-     * @return array
+     * @param string $dataFileContent
+     *
+     * @return ZanuiOrmFixture
      */
-    public function getInfo()
+    public function setDataFileContent($dataFileContent)
     {
-        return $this->info;
+        $this->dataFileContent = $dataFileContent;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataFileContent()
+    {
+        return $this->dataFileContent;
+    }
+
+    /**
+     * @param string $dataFilename
+     *
+     * @return ZanuiOrmFixture
+     */
+    public function setDataFilename($dataFilename)
+    {
+        $this->dataFilename = $dataFilename;
+
+        return $this;
     }
 
     /**
@@ -51,17 +78,7 @@ abstract class ZanuiOrmFixture extends ZanuiFixture
         $options = $this->getOptions($this->info);
 
         $entityClass = $this->namespace . '\\' . $this->name;
-
-        foreach ($this->info['data'] as $key => $itemData) {
-            $this->loadSingleEntity(
-                $entityClass,
-                $key,
-                $manager,
-                '',
-                $itemData,
-                $options
-            );
-        }
+        $this->loadEntity($entityClass, $this->name, $manager, $this->info);
 
         if ($this->isOptionDisabled(static::DATA_OPTION_FLUSH_ON_EVERY_ROW, $options)) {
             $this->flush($manager, $entityClass, $options);
@@ -73,32 +90,38 @@ abstract class ZanuiOrmFixture extends ZanuiFixture
      */
     public function loadDataFilename()
     {
-        $this->dataFilename =
-            $this->baseDir . DIRECTORY_SEPARATOR .
-            'Data' . DIRECTORY_SEPARATOR .
-            $this->name . '.yml';
+        if (!isset($this->dataFilename)) {
+            $this->dataFilename =
+                $this->baseDir . DIRECTORY_SEPARATOR .
+                'Data' . DIRECTORY_SEPARATOR .
+                $this->name . '.yml';
+        }
 
         return $this;
     }
 
     /**
      * @param string $filename
-     * @return string
      */
-    public function getDataFileContent($filename)
+    public function parseDataFileContent($filename)
     {
+        if (isset($this->dataFileContent)) {
+            return;
+        }
+
         $file = new SplFileInfo($filename, '', '');
 
-        return $file->getContents();
+        $this->dataFileContent = Yaml::parse($file->getContents());
     }
 
     /**
      * @throws LoadInfoException
      */
-    protected function loadInfo()
+    public function loadInfo()
     {
         $filename = $this->getDataFilename();
-        $fileContents = Yaml::parse($this->getDataFileContent($filename));
+        $this->parseDataFileContent($filename);
+        $fileContents = $this->getDataFileContent();
 
         if (!is_array($fileContents)) {
             throw new LoadInfoException('File ' . $filename . ' could not be parsed into an array.');

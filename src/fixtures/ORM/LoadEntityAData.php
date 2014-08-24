@@ -13,7 +13,7 @@ use Zanui\FixturesBundle\DataFixtures\ZanuiOrmFixture;
 
 class LoadEntityAData extends ZanuiOrmFixture
 {
-//    protected $namespace = 'fixtures\Entity';
+    protected $namespace = 'fixtures\Entity';
     protected $name = 'EntityA';
     protected $baseDir = __DIR__;
 }

@@ -1,6 +1,4 @@
-options:
-  add_reference: true
 data:
-  user-admin:
-    username: admin
-    password: admin
+  -
+    field_a: value_a
+    field_b: value_b

@@ -10,9 +10,17 @@ use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zanui\FixturesBundle\Exception\InvalidOptionException;
+use Zanui\FixturesBundle\Exception\LoadInfoException;
 
 class LoadEntityADataSpec extends ObjectBehavior
 {
+    protected $expectedData = array(
+        array(
+            'field_a' => 'value_a',
+            'field_b' => 'value_b'
+        )
+    );
+
     function it_is_initializable()
     {
         $this->shouldHaveType('fixtures\ORM\LoadEntityAData');
@@ -42,6 +50,7 @@ class LoadEntityADataSpec extends ObjectBehavior
         $container->hasParameter('base_order_fallback')->willReturn(true);
         $container->getParameter('base_order_fallback')->willReturn(1);
 
+        $this->setNamespace(null);
         $this->setContainer($container);
 
         $this->getNamespace()->shouldReturn('some\namespace');
@@ -156,27 +165,58 @@ class LoadEntityADataSpec extends ObjectBehavior
         $this->flush($manager, 'fixtures\ORM\LoadEntityAData', $options);
     }
 
-//    function it_should_load_info_from_the_data_folder(
-//        ObjectManager $manager
-//    ) {
-//        $expectedOptions = array(
-//            'add_reference' => true
-//        );
-//
-//        $expectedData = array(
-//            'user-admin' => array(
-//                'username' => 'admin',
-//                'password' => 'admin'
-//            )
-//        );
-//
-//        $expectedInfo = array(
-//            'options' => $expectedOptions,
-//            'data' => $expectedData
-//        );
-//
-//        $this->load($manager);
-//
-//        $this->getInfo()->shouldReturn($expectedInfo);
-//    }
+    function it_infers_a_reference_key()
+    {
+        $this->getReferenceKey('entity_key', 'item_key', '')
+            ->shouldReturn('entity_key-item_key');
+
+        $this->getReferenceKey('entity_key', 'item_key', '-123')
+            ->shouldReturn('entity_key-item_key-123');
+    }
+
+    function it_generates_unique_suffixes()
+    {
+        $this->generateUniqueSuffix()
+            ->shouldNotBeEqualTo($this->generateUniqueSuffix());
+    }
+
+    function it_should_load_info_from_the_data_folder(
+        ObjectManager $manager,
+        ReferenceRepository $referenceRepository
+    ) {
+        $entity = new EntityA();
+        $entity->setFieldA('value_a');
+        $entity->setFieldB('value_b');
+
+        $this->setReferenceRepository($referenceRepository);
+        $manager->persist($entity)->shouldBeCalled();
+        $manager->flush()->shouldBeCalled();
+
+        $expectedInfo = array('data' => $this->expectedData);
+
+        $this->load($manager);
+        $this->getInfo()->shouldReturn($expectedInfo);
+    }
+
+    function it_should_not_load_data_without_a_data_key(
+        ObjectManager $manager
+    ) {
+        $dataFileContent = array('no_data_key' => $this->expectedData);
+
+        $this->setDataFilename('file');
+        $this->setDataFileContent($dataFileContent);
+
+        $this->shouldThrow(new LoadInfoException('File file does not have a data key.'))
+            ->during('load', array($manager));
+    }
+
+    function it_should_not_load_data_if_it_cannot_be_parsed_as_an_array(
+        ObjectManager $manager
+    ) {
+        $this->setDataFilename('file');
+        $this->setDataFileContent('not_an_array');
+
+        $this->shouldThrow(new LoadInfoException('File file could not be parsed into an array.'))
+            ->during('load', array($manager));
+    }
 }

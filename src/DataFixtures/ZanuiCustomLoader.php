@@ -36,10 +36,10 @@ abstract class ZanuiCustomLoader extends ZanuiFixture
     /**
      * {@inheritdoc}
      */
-    protected function loadInfo()
+    public function loadInfo()
     {
         $finder = new Finder();
-        $finder->files()->in($this->baseDir . '/' . $this->name)->name('*.yml');
+        $finder->files()->in($this->baseDir . '/**/' . $this->name)->name('*.yml');
 
         $customInfo = array();
 
@@ -53,13 +53,13 @@ abstract class ZanuiCustomLoader extends ZanuiFixture
     }
 
     /**
-     * @param mixed  $entity
+     * @param string $entityClass
      * @param string $tableName
      */
-    protected function loadCustomEntity($entity, $tableName)
+    public function loadCustomEntity($entityClass, $tableName)
     {
         parent::loadEntity(
-            $entity,
+            $entityClass,
             $tableName,
             $this->manager,
             $this->current['data'][$tableName],

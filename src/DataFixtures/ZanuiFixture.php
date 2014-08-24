@@ -96,7 +96,19 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      *
      * @return ZanuiFixture
      */
-    abstract protected function loadInfo();
+    abstract public function loadInfo();
+
+    /**
+     * @param string $namespace
+     *
+     * @return ZanuiFixture
+     */
+    public function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
+
+        return $this;
+    }
 
     /**
      * @return string
@@ -120,6 +132,14 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     public function getEntity()
     {
         return $this->entity;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInfo()
+    {
+        return $this->info;
     }
 
     /**
@@ -264,15 +284,14 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     /**
      * Loads all rows for a specific entity
      *
-     * @param mixed         $entity
+     * @param mixed         $entityClass
      * @param string        $key
      * @param ObjectManager $manager
      * @param array         $info
      * @param string        $referenceUniqueSuffix
      */
-    public function loadEntity($entity, $key, $manager, $info, $referenceUniqueSuffix = '')
+    public function loadEntity($entityClass, $key, $manager, $info, $referenceUniqueSuffix = '')
     {
-        $entityClass = get_class($entity);
         $options = $this->getOptions($info);
 
         foreach ($info['data'] as $itemIndex => $itemData) {
@@ -327,15 +346,11 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
         }
 
         if ($this->isOptionEnabled(static::DATA_OPTION_ADD_REFERENCE, $options)) {
-            $referenceKey =
-                implode(
-                    static::LOCAL_REFERENCE_SEPARATOR,
-                    array_filter(array($key, $itemIndex), 'static::referenceFilter')
-                ) .
-                $referenceUniqueSuffix;
-
+            $referenceKey = $this->getReferenceKey($key, $itemIndex, $referenceUniqueSuffix);
             $this->addReference($referenceKey, $entity);
         }
+
+        $this->entity = $entity;
     }
 
     /**
@@ -376,13 +391,24 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     }
 
     /**
-     * @param $value
+     * @param string $key
+     * @param string $itemIndex
+     * @param string $referenceUniqueSuffix
      *
-     * @return bool
+     * @return string
      */
-    protected static function referenceFilter($value)
+    public function getReferenceKey($key, $itemIndex, $referenceUniqueSuffix)
     {
-        return ($value !== null && $value !== false && $value !== '');
+        return implode(
+            static::LOCAL_REFERENCE_SEPARATOR,
+            array_filter(
+                array($key, $itemIndex),
+                function ($value) {
+                    return ($value !== null && $value !== false && $value !== '');
+                }
+            )
+        ) .
+        $referenceUniqueSuffix;
     }
 
     /**
@@ -390,7 +416,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      *
      * @return string
      */
-    protected function getUniqueSuffix()
+    public function generateUniqueSuffix()
     {
         return static::LOCAL_REFERENCE_SEPARATOR . uniqid();
     }
