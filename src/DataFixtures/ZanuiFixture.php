@@ -79,7 +79,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     /** @var ContainerInterface */
     protected $container;
 
-    /** @var object */
+    /** @var mixed */
     protected $entity;
 
     /** @var array Available data options */

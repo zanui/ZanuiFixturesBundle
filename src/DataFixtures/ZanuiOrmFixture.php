@@ -89,7 +89,7 @@ abstract class ZanuiOrmFixture extends ZanuiFixture
     {
         $file = new SplFileInfo($filename, '', '');
 
-        return $file->getContents($filename);
+        return $file->getContents();
     }
 
     /**
