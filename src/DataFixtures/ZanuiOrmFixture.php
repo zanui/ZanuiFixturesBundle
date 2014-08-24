@@ -25,15 +25,15 @@ abstract class ZanuiOrmFixture extends ZanuiFixture
     /** @var string */
     protected $dataFilename;
 
-    /** @var array */
+    /** @var mixed */
     protected $dataFileContent;
 
     /**
-     * @param array $dataFileContent
+     * @param mixed $dataFileContent
      *
      * @return ZanuiOrmFixture
      */
-    public function setDataFileContent(array $dataFileContent)
+    public function setDataFileContent($dataFileContent)
     {
         $this->dataFileContent = $dataFileContent;
 
@@ -41,7 +41,7 @@ abstract class ZanuiOrmFixture extends ZanuiFixture
     }
 
     /**
-     * @return array
+     * @return mixed
      */
     public function getDataFileContent()
     {
@@ -122,6 +122,10 @@ abstract class ZanuiOrmFixture extends ZanuiFixture
         $filename = $this->getDataFilename();
         $this->parseDataFileContent($filename);
         $fileContents = $this->getDataFileContent();
+
+        if (!is_array($fileContents)) {
+            throw new LoadInfoException('File ' . $filename . ' could not be parsed into an array.');
+        }
 
         if (!isset($fileContents['data'])) {
             throw new LoadInfoException('File ' . $filename . ' does not have a data key.');
