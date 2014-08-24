@@ -115,7 +115,7 @@ abstract class ZanuiOrmFixture extends ZanuiFixture
     }
 
     /**
-     * @throws LoadInfoException
+     * {@inheritdoc}
      */
     public function loadInfo()
     {

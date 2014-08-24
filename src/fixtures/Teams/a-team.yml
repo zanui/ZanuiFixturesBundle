@@ -1,0 +1,21 @@
+data:
+  team:
+    options:
+      add_reference: true
+    data:
+      -
+        name: A-team
+        motto: If you can find them... maybe you can hire... The A-Team.
+
+  member:
+    options:
+      flush_on_every_row: true
+      local_references:
+        - team
+    data:
+      -
+        team: team-0
+        name: Hannibal
+      -
+        team: team-0
+        name: Murdock

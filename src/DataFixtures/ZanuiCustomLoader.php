@@ -28,9 +28,6 @@ abstract class ZanuiCustomLoader extends ZanuiFixture
     protected $referenceUniqueSuffix;
 
     /** @var array */
-    protected $info;
-
-    /** @var array */
     protected $current;
 
     /**
@@ -39,7 +36,7 @@ abstract class ZanuiCustomLoader extends ZanuiFixture
     public function loadInfo()
     {
         $finder = new Finder();
-        $finder->files()->in($this->baseDir . '/**/' . $this->name)->name('*.yml');
+        $finder->files()->in($this->baseDir . '/' . $this->name)->name('*.yml');
 
         $customInfo = array();
 
@@ -48,6 +45,8 @@ abstract class ZanuiCustomLoader extends ZanuiFixture
 
             $customInfo[$file->getFilename()] = Yaml::parse($file->getContents());
         }
+
+        $this->info = $customInfo;
 
         return $customInfo;
     }

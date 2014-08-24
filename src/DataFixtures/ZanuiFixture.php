@@ -17,6 +17,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Zanui\FixturesBundle\Exception\InvalidOptionException;
+use Zanui\FixturesBundle\Exception\LoadInfoException;
 
 /**
  * Zanui fixture
@@ -94,7 +95,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     /**
      * Loads fixture info.
      *
-     * @return ZanuiFixture
+     * @throws LoadInfoException
      */
     abstract public function loadInfo();
 
