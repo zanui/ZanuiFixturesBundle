@@ -209,14 +209,4 @@ class LoadEntityADataSpec extends ObjectBehavior
         $this->shouldThrow(new LoadInfoException('File file does not have a data key.'))
             ->during('load', array($manager));
     }
-
-    function it_should_not_load_data_if_it_cannot_be_parsed_as_an_array(
-        ObjectManager $manager
-    ) {
-        $this->setDataFilename('file');
-        $this->setDataFileContent('not_an_array');
-
-        $this->shouldThrow(new LoadInfoException('File file could not be parsed into an array.'))
-            ->during('load', array($manager));
-    }
 }
