@@ -16,7 +16,7 @@ Take the following example, in which we add a ``Group`` entity...:
     options:
       add_reference: true
     data:
-      group-admin:
+      admin:
         group_name: admin
 
 .. code-block:: php
@@ -43,8 +43,8 @@ Take the following example, in which we add a ``Group`` entity...:
         - group
     data:
       -
-        user: user-admin
-        group: group-admin
+        user: User-admin
+        group: Group-admin
 
 .. code-block:: php
 
@@ -59,12 +59,12 @@ Take the following example, in which we add a ``Group`` entity...:
         protected $order = 200;
     }
 
-Notice that we referred to the admin user by making ``user`` have the value ``user-admin``,
-which was the key for the admin user as defined in its YAML file (same applies for ``group``),
-and that the order is set to 200 to make sure ``User`` and ``Group`` are already loaded when
-we process ``UserGroup``.
+Notice that we referred to the admin user by making ``user`` have the value ``User-admin``,
+in which the first part is the entity it refers to and the second part was the key for the
+admin user as defined in its YAML file (same applies for ``group``). Also notice that the order is
+set to 200 to make sure ``User`` and ``Group`` are already loaded when we process ``UserGroup``.
 
-The loader knows that those values are foreign keys because we explicitely listed them using the
+The loader knows that those values are foreign keys because we explicitly listed them using the
 ``foreign_keys`` option. Any fields that start with ``fk_`` (case insensitive)
 are automatically inferred to be foreign keys, so they don't need to be included in the list.
 The references exist because we added the option ``add_reference: true`` to our ``User.yml`` and

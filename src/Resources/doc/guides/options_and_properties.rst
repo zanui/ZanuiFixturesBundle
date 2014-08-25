@@ -16,14 +16,14 @@ Data options
 ``foreign_keys`` (array)
     Defines a list of fields that should be treated as foreign keys, *ie.* their values point to a previously saved reference. Fields that start with ``fk_`` (case insensitive) are assumed to be foreign keys, so they do not need to be listed.
 
-``local_references`` (array)
+``local_references`` (array, only for fixtures using a``ZanuiCustomLoader``)
     Similar to ``foreign_keys``, but in this case the references point to entities saved within the same loader. They are especially useful when writing custom loaders.
 
 Fixture properties
 ------------------
 
 We have mentioned all of the following properties in previous sections, but here is a definition for relevant
-properties for fixture classes extending the ``ZanuiOrmFixture`` class:
+properties for fixture classes extending the ``ZanuiOrmFixture`` or ``ZanuiCustomLoader`` class:
 
 ``baseDir``
     Defines the base directory where data will be loaded from. Typically it will simply be ``__DIR__``.
@@ -31,10 +31,11 @@ properties for fixture classes extending the ``ZanuiOrmFixture`` class:
     fixture classes from it.
 
 ``name``
-    Defines the name of the fixture, and in the case of fixtures extending ``ZanuiOrmFixture``,
-    it must match the name of the YAML file where the data is stored to work out of the box.
+    Defines the name of the fixture. In the case of fixtures extending ``ZanuiOrmFixture``,
+    it must match the name of the YAML file where the data is stored to work out of the box. In
+    the case of ``ZanuiCustomLoader``, it must match the directory name in which the YAML files are stored.
 
-``namespace``
+``namespace`` (only relevant for ``ZanuiOrmFixture``)
     Defines the namespace to use in order to load the entity being loaded.
     It falls back to the ``entity_namespace_fallback`` parameter described above.
 
