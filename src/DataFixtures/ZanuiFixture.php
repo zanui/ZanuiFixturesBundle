@@ -17,6 +17,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Zanui\FixturesBundle\Exception\InvalidOptionException;
+use Zanui\FixturesBundle\Exception\LoadInfoException;
 
 /**
  * Zanui fixture
@@ -61,34 +62,28 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      */
     const LOCAL_REFERENCE_SEPARATOR = '-';
 
-    /**
-     * @var string The namespace to use when creating entities
-     */
+    /** @var string The namespace to use when creating entities */
     protected $namespace;
 
-    /**
-     * @var string The name of the fixture
-     */
+    /** @var string The name of the fixture */
     protected $name;
 
-    /**
-     * @var int The order in which the fixture should be loaded
-     */
+    /** @var int The order in which the fixture should be loaded */
     protected $order;
 
-    /**
-     * @var string The base directory for the fixture. The data will be loaded from the Data subdirectory.
-     */
+    /** @var string The base directory for the fixture. The data will be loaded from the Data subdirectory. */
     protected $baseDir;
 
-    /**
-     * @var ContainerInterface
-     */
+    /** @var array */
+    protected $info;
+
+    /** @var ContainerInterface */
     protected $container;
 
-    /**
-     * @var array Available data options
-     */
+    /** @var mixed */
+    protected $entity;
+
+    /** @var array Available data options */
     protected $dataOptions = array(
         self::DATA_OPTION_FLUSH_PRESERVING_IDS,
         self::DATA_OPTION_ADD_REFERENCE,
@@ -98,15 +93,55 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     );
 
     /**
-     * Loads info from a YAML file matching the given name or,
-     * if no name is given, the name of the fixture.
+     * Loads fixture info.
      *
-     * @param string $dir  Path to the directory from where to get the data
-     * @param string $name Filename from where to grab the data
+     * @throws LoadInfoException
+     */
+    abstract public function loadInfo();
+
+    /**
+     * @param string $namespace
      *
+     * @return ZanuiFixture
+     */
+    public function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @return object
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
      * @return array
      */
-    abstract protected function loadInfo($dir = null, $name = null);
+    public function getInfo()
+    {
+        return $this->info;
+    }
 
     /**
      * {@inheritDoc}
@@ -125,14 +160,6 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
-
-    /**
      * Sets a field of a given entity
      *
      * @param mixed  $entity
@@ -140,7 +167,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      * @param string $fieldValue
      * @param array  $options
      */
-    protected function setField($entity, $fieldName, $fieldValue, array $options = array())
+    public function setField($entity, $fieldName, $fieldValue, array $options = array())
     {
         $setterName = $this->fieldToSetterMethod($fieldName);
 
@@ -149,6 +176,8 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
         } else {
             $entity->$setterName($fieldValue);
         }
+
+        $this->entity = $entity;
     }
 
     /**
@@ -158,7 +187,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      *
      * @return bool
      */
-    protected function isValidDataOption($optionName)
+    public function isValidDataOption($optionName)
     {
         return in_array($optionName, $this->dataOptions);
     }
@@ -172,7 +201,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      * @return bool
      * @throws InvalidOptionException
      */
-    protected function isOptionEnabled($optionName, array $options)
+    public function isOptionEnabled($optionName, array $options)
     {
         if (!$this->isValidDataOption($optionName)) {
             throw new InvalidOptionException('"' . $optionName . '" is not a valid option.');
@@ -189,7 +218,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      *
      * @return bool
      */
-    protected function isOptionDisabled($optionName, array $options)
+    public function isOptionDisabled($optionName, array $options)
     {
         return !$this->isOptionEnabled($optionName, $options);
     }
@@ -202,7 +231,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      *
      * @return string
      */
-    protected function fieldToSetterMethod($fieldName)
+    public function fieldToSetterMethod($fieldName)
     {
         return 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $fieldName)));
     }
@@ -215,7 +244,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      *
      * @return bool
      */
-    protected function isForeignKey($fieldName, array $options = array())
+    public function isForeignKey($fieldName, array $options = array())
     {
         if (strncasecmp('fk_', $fieldName, 3) === 0) {
             return true;
@@ -235,7 +264,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      *
      * @return bool
      */
-    protected function isLocalReference($fieldName, array $options = array())
+    public function isLocalReference($fieldName, array $options = array())
     {
         return (
             !empty($options[static::DATA_OPTION_LOCAL_REFERENCES]) &&
@@ -248,7 +277,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      *
      * @return array
      */
-    protected function getOptions(array $data)
+    public function getOptions(array $data)
     {
         return isset($data['options']) ? $data['options'] : array();
     }
@@ -256,15 +285,14 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     /**
      * Loads all rows for a specific entity
      *
-     * @param mixed         $entity
+     * @param string        $entityClass
      * @param string        $key
      * @param ObjectManager $manager
      * @param array         $info
      * @param string        $referenceUniqueSuffix
      */
-    protected function loadEntity($entity, $key, $manager, $info, $referenceUniqueSuffix = '')
+    public function loadEntity($entityClass, $key, $manager, $info, $referenceUniqueSuffix = '')
     {
-        $entityClass = get_class($entity);
         $options = $this->getOptions($info);
 
         foreach ($info['data'] as $itemIndex => $itemData) {
@@ -291,7 +319,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      * @param array         $options
      * @param string        $referenceUniqueSuffix
      */
-    protected function loadSingleEntity(
+    public function loadSingleEntity(
         $entityClass,
         $key,
         ObjectManager $manager,
@@ -319,39 +347,25 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
         }
 
         if ($this->isOptionEnabled(static::DATA_OPTION_ADD_REFERENCE, $options)) {
-            $referenceKey =
-                implode(
-                    static::LOCAL_REFERENCE_SEPARATOR,
-                    array_filter(array($key, $itemIndex), 'static::referenceFilter')
-                ) .
-                $referenceUniqueSuffix;
-
+            $referenceKey = $this->getReferenceKey($key, $itemIndex, $referenceUniqueSuffix);
             $this->addReference($referenceKey, $entity);
         }
+
+        $this->entity = $entity;
     }
 
     /**
      * @param ObjectManager $manager
-     * @param string        $entityClass
+     * @param string        $entityClass Fully qualified class name (ie. with namespace)
      * @param array         $options
      */
-    protected function flush(ObjectManager $manager, $entityClass, array $options)
+    public function flush(ObjectManager $manager, $entityClass, array $options)
     {
         if ($this->isOptionEnabled(static::DATA_OPTION_FLUSH_PRESERVING_IDS, $options)) {
-            $this->flushPreservingIds($manager, get_class(new $entityClass()));
+            $this->flushPreservingIds($manager, $entityClass);
         } else {
             $manager->flush();
         }
-    }
-
-    /**
-     * @param $value
-     *
-     * @return bool
-     */
-    protected static function referenceFilter($value)
-    {
-        return ($value !== null && $value !== false && $value !== '');
     }
 
     /**
@@ -362,7 +376,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      * @param ObjectManager $manager
      * @param string        $className Fully qualified class name (ie. with namespace)
      */
-    protected function flushPreservingIds(ObjectManager $manager, $className)
+    public function flushPreservingIds(ObjectManager $manager, $className)
     {
         /** @var ClassMetadata $metadata */
         $metadata = $manager->getClassMetaData($className);
@@ -378,11 +392,32 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     }
 
     /**
+     * @param string $key
+     * @param string $itemIndex
+     * @param string $referenceUniqueSuffix
+     *
+     * @return string
+     */
+    public function getReferenceKey($key, $itemIndex, $referenceUniqueSuffix)
+    {
+        return implode(
+            static::LOCAL_REFERENCE_SEPARATOR,
+            array_filter(
+                array($key, $itemIndex),
+                function ($value) {
+                    return ($value !== null && $value !== false && $value !== '');
+                }
+            )
+        ) .
+        $referenceUniqueSuffix;
+    }
+
+    /**
      * Returns a unique suffix for local references
      *
      * @return string
      */
-    protected function getUniqueSuffix()
+    public function generateUniqueSuffix()
     {
         return static::LOCAL_REFERENCE_SEPARATOR . uniqid();
     }

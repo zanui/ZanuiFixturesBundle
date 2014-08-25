@@ -25,3 +25,11 @@ Guide
    guides/controlling_order
    guides/options_and_properties
    guides/advanced_usage
+
+Cookbooks
+---------
+
+.. toctree::
+   :maxdepth: 1
+
+   cookbooks/writing_custom_loaders

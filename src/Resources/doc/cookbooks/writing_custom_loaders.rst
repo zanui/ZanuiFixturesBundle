@@ -1,15 +1,5 @@
-Advanced usage
-==============
-
-Following the directory structure and naming conventions is recommended but not required.
-You may decide to extend any of the classes included in this bundle to change the default behaviour.
-
-For example, you may want to override the ``load(...)`` and ``loadInfo(...)`` methods of the ``ZanuiOrmFixture``
-class to follow your own conventions. You may even use the conventions in this bundle for some fixtures and
-extend directly from ``AbstractFixture`` of the Doctrine2 Data Fixtures library for others.
-
 Writing custom loaders
-----------------------
+======================
 
 This bundle also provides a ``ZanuiCustomLoader`` class to help create classes that load data into several
 (usually related) entities. Imagine we want to load data about a ``team`` and its ``members``. With a custom
@@ -52,14 +42,15 @@ And here is your custom loader, which extends ``ZanuiCustomLoader``:
 
     use Doctrine\Common\Persistence\ObjectManager;
     use Zanui\FixturesBundle\DataFixtures\ZanuiCustomLoader;
-    use Acme\HelloBundle\Entity\Team;
-    use Acme\HelloBundle\Entity\Member;
 
     class TeamLoader extends ZanuiCustomLoader
     {
         protected $name = 'Teams';
         protected $order = 1000;
         protected $baseDir = __DIR__;
+
+        $teamClass = 'Acme\HelloBundle\Entity\Team';
+        $memberClass = 'Acme\HelloBundle\Entity\Member';
 
         public function load(ObjectManager $manager)
         {
@@ -68,10 +59,10 @@ And here is your custom loader, which extends ``ZanuiCustomLoader``:
 
             foreach ($this->info as $current) {
                 $this->current = $current;
-                $this->referenceUniqueSuffix = $this->getUniqueSuffix();
+                $this->referenceUniqueSuffix = $this->generateUniqueSuffix();
 
-                $this->loadCustomEntity(new Team(), 'team');
-                $this->loadCustomEntity(new Member(), 'member');
+                $this->loadCustomEntity($teamClass, 'team');
+                $this->loadCustomEntity($memberClass, 'member');
             }
 
             $manager->flush();

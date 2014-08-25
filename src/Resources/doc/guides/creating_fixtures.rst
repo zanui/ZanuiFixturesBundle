@@ -13,10 +13,10 @@ First, we would create a YAML file with the necessary information:
     options:
       add_reference: true
     data:
-      user-admin:
+      admin:
         username: admin
         password: admin
-      user-test:
+      test:
         username: test
         password: test
 

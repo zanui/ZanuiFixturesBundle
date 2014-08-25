@@ -1,0 +1,21 @@
+imports:
+  - php
+
+filter:
+  excluded_paths: &excluded_paths
+    - spec/*
+
+build:
+  tests:
+    override:
+      - command: 'bin/phpspec run'
+        coverage:
+            file: 'build/logs/clover.xml'
+            format: 'php-clover'
+
+tools:
+  php_sim: true
+  php_pdepend: true
+  php_analyzer: true
+  php_code_sniffer: true
+  php_mess_detector: true

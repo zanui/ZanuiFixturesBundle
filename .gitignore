@@ -1,3 +1,7 @@
+.*
 composer.lock
+bin/
+build/
+coverage/
 vendor/
-Resources/doc/_build
+src/Resources/doc/_build

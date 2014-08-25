@@ -1,8 +1,8 @@
 {
     "name": "zanui/zanui-fixtures-bundle",
     "type": "symfony-bundle",
-    "description": "Provides classes to easily load fixtures",
-    "keywords": ["Persistence", "Fixture"],
+    "description": "Provides classes to easily load fixtures to the Doctrine ORM using YAML files",
+    "keywords": ["persistence", "fixture", "doctrine", "yaml"],
     "homepage": "https://github.com/zanui/ZanuiFixturesBundle",
     "license": "MIT",
     "authors": [
@@ -22,9 +22,21 @@
         "symfony/finder": "~2.2",
         "symfony/yaml": "~2.2"
     },
+    "require-dev": {
+      "phpspec/phpspec": "~2.0",
+      "henrikbjorn/phpspec-code-coverage": "~0.2"
+    },
     "autoload": {
         "psr-4": {
-            "Zanui\\FixturesBundle\\": ""
+          "Zanui\\FixturesBundle\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+          "fixtures\\": "fixtures/"
+        }
+    },
+    "config": {
+      "bin-dir": "bin/"
     }
 }

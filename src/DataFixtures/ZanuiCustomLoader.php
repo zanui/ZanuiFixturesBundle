@@ -28,26 +28,15 @@ abstract class ZanuiCustomLoader extends ZanuiFixture
     protected $referenceUniqueSuffix;
 
     /** @var array */
-    protected $info;
-
-    /** @var array */
     protected $current;
 
     /**
      * {@inheritdoc}
      */
-    protected function loadInfo($dir = null, $name = null)
+    public function loadInfo()
     {
-        if ($dir === null) {
-            $dir = $this->baseDir;
-        }
-
-        if ($name === null) {
-            $name = $this->name;
-        }
-
         $finder = new Finder();
-        $finder->files()->in($dir . '/' . $name)->name('*.yml');
+        $finder->files()->in($this->baseDir . '/' . $this->name)->name('*.yml');
 
         $customInfo = array();
 
@@ -57,17 +46,19 @@ abstract class ZanuiCustomLoader extends ZanuiFixture
             $customInfo[$file->getFilename()] = Yaml::parse($file->getContents());
         }
 
+        $this->info = $customInfo;
+
         return $customInfo;
     }
 
     /**
-     * @param mixed  $entity
+     * @param string $entityClass
      * @param string $tableName
      */
-    protected function loadCustomEntity($entity, $tableName)
+    public function loadCustomEntity($entityClass, $tableName)
     {
         parent::loadEntity(
-            $entity,
+            $entityClass,
             $tableName,
             $this->manager,
             $this->current['data'][$tableName],
