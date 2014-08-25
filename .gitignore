@@ -2,6 +2,6 @@
 composer.lock
 bin/
 build/
-coverage/
+artifacts/
 vendor/
 src/Resources/doc/_build
