@@ -9,15 +9,15 @@ existing file inside the ``Data`` directory. The ``name`` also needs to match th
 .. code-block:: text
 
     Acme/
-    └─ HelloBundle/
-       └─ DataFixtures/
-          └─ ORM/
-             ├─ Data/
-             ├─ ├─ User.yml
-             ├─ └─ ...
-             ├─ AcmeHelloOrmFixture.php
-             ├─ LoadUserData.php
-             └─ ...
+    `-- HelloBundle/
+        `-- DataFixtures/
+            `-- ORM/
+                |-- Data/
+                |   |-- User.yml
+                |   `-- (other data files)
+                |-- AcmeHelloOrmFixture.php
+                |-- LoadUserData.php
+                `-- (other fixture classes)
 
 The names of the entity fields inside the YAML file also need to follow a convention,
 as the the bundle uses it to infer the setter method to call in order to set their value:
