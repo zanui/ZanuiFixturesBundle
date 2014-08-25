@@ -1,7 +1,7 @@
 # ZanuiFixturesBundle [![Build Status](https://scrutinizer-ci.com/g/zanui/ZanuiFixturesBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/zanui/ZanuiFixturesBundle/build-status/master)
 
 [![Code Climate](https://codeclimate.com/github/zanui/ZanuiFixturesBundle/badges/gpa.svg)](https://codeclimate.com/github/zanui/ZanuiFixturesBundle)
-[![Code Coverage](https://scrutinizer-ci.com/g/zanui/ZanuiFixturesBundle/badges/coverage.png)](https://scrutinizer-ci.com/g/zanui/ZanuiFixturesBundle/?branch=phpspec-setup)
+[![Code Coverage](https://scrutinizer-ci.com/g/zanui/ZanuiFixturesBundle/badges/coverage.png)](https://scrutinizer-ci.com/g/zanui/ZanuiFixturesBundle/)
 [![Dependency Status](https://gemnasium.com/zanui/ZanuiFixturesBundle.svg)](https://gemnasium.com/zanui/ZanuiFixturesBundle)
 [![Latest Stable Version](https://poser.pugx.org/zanui/zanui-fixtures-bundle/v/stable.svg)](https://packagist.org/packages/zanui/zanui-fixtures-bundle)
 [![Total Downloads](https://poser.pugx.org/zanui/zanui-fixtures-bundle/downloads.svg)](https://packagist.org/packages/zanui/zanui-fixtures-bundle)
