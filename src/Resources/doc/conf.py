@@ -18,7 +18,7 @@ copyright = u'2014, Internet Services Australia 3 Pty Limited (http://www.zanui.
 # The short X.Y version.
 version = '2.0'
 # The full version, including alpha/beta/rc tags.
-release = '2.0.0'
+release = '2.0.1'
 
 html_theme = 'default'
 htmlhelp_basename = 'zanui-fixtures-bundle'

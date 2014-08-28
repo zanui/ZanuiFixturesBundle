@@ -58,6 +58,11 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
     const DATA_OPTION_FLUSH_ON_EVERY_ROW = 'flush_on_every_row';
 
     /**
+     * List of fields which values should be transformed to DateTime.
+     */
+    const DATA_OPTION_DATETIME_FIELDS = 'date_time_fields';
+
+    /**
      * Defines the separator to use for the local reference suffix
      */
     const LOCAL_REFERENCE_SEPARATOR = '-';
@@ -89,7 +94,8 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
         self::DATA_OPTION_ADD_REFERENCE,
         self::DATA_OPTION_FOREIGN_KEYS,
         self::DATA_OPTION_LOCAL_REFERENCES,
-        self::DATA_OPTION_FLUSH_ON_EVERY_ROW
+        self::DATA_OPTION_FLUSH_ON_EVERY_ROW,
+        self::DATA_OPTION_DATETIME_FIELDS
     );
 
     /**
@@ -174,10 +180,28 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
         if ($this->isForeignKey($fieldName, $options)) {
             $entity->$setterName($this->getReference($fieldValue));
         } else {
-            $entity->$setterName($fieldValue);
+            $entity->$setterName($this->processValue($fieldName, $fieldValue, $options));
         }
 
         $this->entity = $entity;
+    }
+
+    /**
+     * Process a value and transforms if needed
+     *
+     * @param string $fieldName
+     * @param string $fieldValue
+     * @param array  $options
+     *
+     * @return mixed
+     */
+    public function processValue($fieldName, $fieldValue, $options)
+    {
+        if ($this->isDateTimeField($fieldName, $options)) {
+            return new \DateTime($fieldValue);
+        }
+
+        return $fieldValue;
     }
 
     /**
@@ -253,6 +277,22 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
         return (
             !empty($options[static::DATA_OPTION_FOREIGN_KEYS]) &&
             in_array($fieldName, $options[static::DATA_OPTION_FOREIGN_KEYS])
+        );
+    }
+
+    /**
+     * Returns true if a field is of type datetime
+     *
+     * @param string $fieldName
+     * @param array  $options
+     *
+     * @return bool
+     */
+    public function isDateTimeField($fieldName, array $options = array())
+    {
+        return (
+            !empty($options[static::DATA_OPTION_DATETIME_FIELDS]) &&
+            in_array($fieldName, $options[static::DATA_OPTION_DATETIME_FIELDS])
         );
     }
 
