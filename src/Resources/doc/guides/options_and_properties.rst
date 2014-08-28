@@ -16,6 +16,9 @@ Data options
 ``foreign_keys`` (array)
     Defines a list of fields that should be treated as foreign keys, *ie.* their values point to a previously saved reference. Fields that start with ``fk_`` (case insensitive) are assumed to be foreign keys, so they do not need to be listed.
 
+``date_time_fields`` (array)
+    Defines a list of fields which values should be transformed to ``DateTime``., *eg.* a value of ``2000-01-01`` would be passed to the setter as ``\DateTime('2000-01-01')``.
+
 ``local_references`` (array, only for fixtures using a``ZanuiCustomLoader``)
     Similar to ``foreign_keys``, but in this case the references point to entities saved within the same loader. They are especially useful when writing custom loaders.
 

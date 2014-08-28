@@ -58,9 +58,13 @@ class LoadEntityADataSpec extends ObjectBehavior
     }
 
     function it_is_able_to_set_simple_fields_for_a_given_entity() {
-        $entityA = new EntityA();
-        $this->setField($entityA, 'field_a', 'value');
+        $this->setField(new EntityA(), 'field_a', 'value');
         $this->getEntity()->getFieldA()->shouldReturn('value');
+    }
+
+    function it_is_able_to_set_datetime_fields_for_a_given_entity() {
+        $this->setField(new EntityA(), 'field_a', '2020-01-01', array('date_time_fields' => array('field_a')));
+        $this->getEntity()->getFieldA()->shouldHaveType('\DateTime');
     }
 
     function it_is_able_to_set_a_foreign_key_for_a_given_entity(
