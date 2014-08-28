@@ -57,12 +57,14 @@ class LoadEntityADataSpec extends ObjectBehavior
         $this->isValidDataOption('some_invalid_option')->shouldReturn(false);
     }
 
-    function it_is_able_to_set_simple_fields_for_a_given_entity() {
+    function it_is_able_to_set_simple_fields_for_a_given_entity()
+    {
         $this->setField(new EntityA(), 'field_a', 'value');
         $this->getEntity()->getFieldA()->shouldReturn('value');
     }
 
-    function it_is_able_to_set_datetime_fields_for_a_given_entity() {
+    function it_is_able_to_set_datetime_fields_for_a_given_entity()
+    {
         $this->setField(new EntityA(), 'field_a', '2020-01-01', array('date_time_fields' => array('field_a')));
         $this->getEntity()->getFieldA()->shouldHaveType('\DateTime');
     }
