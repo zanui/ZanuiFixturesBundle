@@ -290,10 +290,7 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      */
     public function isDateTimeField($fieldName, array $options = array())
     {
-        return (
-            !empty($options[static::DATA_OPTION_DATETIME_FIELDS]) &&
-            in_array($fieldName, $options[static::DATA_OPTION_DATETIME_FIELDS])
-        );
+        return $this->isOfDataOption($fieldName, static::DATA_OPTION_DATETIME_FIELDS, $options);
     }
 
     /**
@@ -306,10 +303,21 @@ abstract class ZanuiFixture extends AbstractFixture implements FixtureInterface,
      */
     public function isLocalReference($fieldName, array $options = array())
     {
-        return (
-            !empty($options[static::DATA_OPTION_LOCAL_REFERENCES]) &&
-            in_array($fieldName, $options[static::DATA_OPTION_LOCAL_REFERENCES])
-        );
+        return $this->isOfDataOption($fieldName, static::DATA_OPTION_LOCAL_REFERENCES, $options);
+    }
+
+    /**
+     * Returns true if a field is declared as being of a given data option.
+     *
+     * @param string $fieldName
+     * @param string $optionName
+     * @param array  $options
+     *
+     * @return bool
+     */
+    protected function isOfDataOption($fieldName, $optionName, array $options = array())
+    {
+        return (!empty($options[$optionName]) && in_array($fieldName, $options[$optionName]));
     }
 
     /**
