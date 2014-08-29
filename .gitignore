@@ -1,4 +1,5 @@
 .*
+phpspec-dev.yml
 composer.lock
 artifacts/
 bin/
