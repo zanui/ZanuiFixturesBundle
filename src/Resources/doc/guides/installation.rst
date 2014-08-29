@@ -1,6 +1,10 @@
 Installation
 ============
 
+.. note::
+
+    ZanuiFixturesBundle follows the semver_ specification
+
 To install, add the following to your ``composer.json`` file:
 
 .. code-block:: json
@@ -33,3 +37,5 @@ Finally, register the ``DoctrineFixturesBundle`` and the
         );
         // ...
     }
+
+.. _semver: http://semver.org/

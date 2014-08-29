@@ -9,7 +9,7 @@ documentation_ for that bundle first to get familiar with the basic concepts tha
 we will build upon.
 
 .. _DoctrineFixturesBundle: https://github.com/doctrine/DoctrineFixturesBundle
-.. _Doctrine2 Data Fixtures library: https://github.com/doctrine/data-fixtures>
+.. _Doctrine2 Data Fixtures library: https://github.com/doctrine/data-fixtures
 .. _documentation: http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
 
 Guide
