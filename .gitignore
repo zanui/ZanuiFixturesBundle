@@ -1,5 +1,6 @@
 .*
 composer.lock
+artifacts/
 bin/
 build/
 vendor/
