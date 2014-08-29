@@ -7,7 +7,7 @@ To install, add the following to your ``composer.json`` file:
 
     {
         "require": {
-            "zanui/zanui-fixtures-bundle": "2.0.*"
+            "zanui/zanui-fixtures-bundle": "~2.0"
         }
     }
 
