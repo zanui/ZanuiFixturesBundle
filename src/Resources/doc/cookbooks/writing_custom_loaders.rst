@@ -49,9 +49,6 @@ And here is your custom loader, which extends ``ZanuiCustomLoader``:
         protected $order = 1000;
         protected $baseDir = __DIR__;
 
-        $teamClass = 'Acme\HelloBundle\Entity\Team';
-        $memberClass = 'Acme\HelloBundle\Entity\Member';
-
         public function load(ObjectManager $manager)
         {
             $this->manager = $manager;
@@ -61,8 +58,8 @@ And here is your custom loader, which extends ``ZanuiCustomLoader``:
                 $this->current = $current;
                 $this->referenceUniqueSuffix = $this->generateUniqueSuffix();
 
-                $this->loadCustomEntity($teamClass, 'team');
-                $this->loadCustomEntity($memberClass, 'member');
+                $this->loadCustomEntity('Acme\HelloBundle\Entity\Team', 'team');
+                $this->loadCustomEntity('Acme\HelloBundle\Entity\Member', 'member');
             }
 
             $manager->flush();
