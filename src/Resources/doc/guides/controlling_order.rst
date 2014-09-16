@@ -35,7 +35,7 @@ Take the following example, in which we add a ``Group`` entity...:
 
 .. code-block:: yaml
 
-    # src/Acme/HelloBundle/DataFixtures/ORM/Data/userGroup.yml
+    # src/Acme/HelloBundle/DataFixtures/ORM/Data/UserGroup.yml
     
     options:
       foreign_keys:
