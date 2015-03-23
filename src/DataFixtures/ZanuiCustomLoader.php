@@ -57,7 +57,7 @@ abstract class ZanuiCustomLoader extends ZanuiFixture
      */
     public function loadCustomEntity($entityClass, $tableName)
     {
-        parent::loadEntity(
+        $this->loadEntity(
             $entityClass,
             $tableName,
             $this->manager,
