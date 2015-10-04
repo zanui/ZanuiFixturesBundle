@@ -20,7 +20,7 @@ existing file inside the ``Data`` directory. The ``name`` also needs to match th
                 `-- (other fixture classes)
 
 The names of the entity fields inside the YAML file also need to follow a convention,
-as the the bundle uses it to infer the setter method to call in order to set their value:
+as the bundle uses it to infer the setter method to call in order to set their value:
 
 - To have a setter method called ``setUsername`` invoked, the field in the YAML file needs to be called ``username`` or ``Username``
 - If the setter method was called ``setUserName``, then the field would need to be called ``user_name`` or ``UserName``.
